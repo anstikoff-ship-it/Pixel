@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pixel TON App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { margin: 0; background: #1a1a1a; color: white; font-family: sans-serif; overflow: hidden; }
+        canvas { display: block; background: #000; touch-action: none; }
+        .ui { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center; }
+        button { padding: 10px 20px; background: #0088cc; border: none; color: white; border-radius: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <canvas id="grid"></canvas>
+    <div class="ui">
+        <p id="coords">Кликни на клетку</p>
+        <button onclick="buy()">Купить за 1$</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('grid');
+        const ctx = canvas.getContext('2d');
+        const cellSize = 20;
+        
+        // Настройка размера под экран
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function drawGrid() {
+            ctx.strokeStyle = '#333';
+            for(let x=0; x<canvas.width; x+=cellSize) {
+                for(let y=0; y<canvas.height; y+=cellSize) {
+                    ctx.strokeRect(x, y, cellSize, cellSize);
+                }
+            }
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const x = Math.floor(e.clientX / cellSize);
+            const y = Math.floor(e.clientY / cellSize);
+            document.getElementById('coords').innerText = `Координаты: ${x}:${y}`;
+            
+            // Рисуем временный пиксель
+            ctx.fillStyle = '#00ff00';
+            ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        });
+
+        function buy() {
+            alert("Здесь будет вызов оплаты кошелька!");
+        }
+
+        drawGrid();
+        // Сообщаем Телеграму, что приложение готово
+        window.Telegram.WebApp.ready();
+    </script>
+</body>
+</html>
